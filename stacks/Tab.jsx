@@ -1,14 +1,14 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Home, Download, Search, BookMark } from "../screens";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {Colors} from '../Styles'
+import { Colors } from "../Styles";
+import HomeStack from "./HomeStack";
 // import HomeStack from "./HomeStack";
 
 const Tab = createBottomTabNavigator();
-export default function TabStack() {
+export default function TabStack({navigation}) {
   return (
     <Tab.Navigator
-    
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -17,11 +17,7 @@ export default function TabStack() {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "download") {
             iconName = focused ? "download-circle" : "download-circle-outline";
-          }
-           else if (route.name === "search") {
-            iconName = focused ? "cloud-search" : "cloud-search-outline";
-          }
-           else if (route.name === "bookmark") {
+          } else if (route.name === "bookmark") {
             iconName = focused ? "bookmark" : "bookmark-outline";
           }
 
@@ -33,7 +29,7 @@ export default function TabStack() {
         tabBarActiveTintColor: Colors.pink,
         tabBarInactiveTintColor: "#ccc",
         // tabBarShowLabel:false
-        tabBarStyle:{backgroundColor: Colors.color1, borderTopWidth: 0}
+        tabBarStyle: { backgroundColor: Colors.color1, borderTopWidth: 0 },
       })}
     >
       <Tab.Screen
@@ -50,27 +46,14 @@ export default function TabStack() {
         }}
         name="home"
         component={Home}
+        navigation={navigation}
       />
+
       <Tab.Screen
-        name="search"
-        component={Search}
-        options={{
-          title: "Search",
-          headerShown: false,
-          headerStyle: {
-            backgroundColor: "#61305D",
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-        }}
-      />
-      <Tab.Screen
-        name="bookMark"
+        name="bookmark"
         component={BookMark}
         options={{
-          title: "BookMark",
+          title: "Bookmark",
           headerShown: false,
           headerStyle: {
             backgroundColor: "#61305D",
@@ -85,7 +68,7 @@ export default function TabStack() {
         name="download"
         component={Download}
         options={{
-          title: "download",
+          title: "Download",
           headerShown: false,
           headerStyle: {
             backgroundColor: "#61305D",
