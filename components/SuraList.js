@@ -1,10 +1,10 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Colors } from "../Styles";
 
-const SuraList = ({data}) => {
+const SuraList = ({data, callVerseIndex}) => {
   return (
-    <Pressable style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={()=>callVerseIndex()}>
       <View style={{flex: 1}}>
         <Text
           style={{
@@ -25,7 +25,7 @@ const SuraList = ({data}) => {
           color: Colors.pink,
           fontSize: 10
       }}>{data?.numberOfVerses} verses</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

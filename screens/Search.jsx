@@ -4,6 +4,8 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Pressable,
+  Modal,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Styles, Colors } from "../Styles";
@@ -15,15 +17,18 @@ const Search = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [list, setList] = useState([]);
+  const [surah, setSurah] = useState({});
   const [loading, setLoading] = useState(true);
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const getSuraList = async () => {
     fetch("https://api.quran.sutanlab.id/surah")
       .then((response) => response.json())
       .then((data) => {
         setLoading(false);
-        setData(data.data); 
-        setList(data.data); 
+        setData(data.data);
+        setList(data.data);
       });
   };
 
@@ -43,8 +48,114 @@ const Search = ({ navigation }) => {
     setSearch("");
     navigation.goBack();
   };
+
+  const callVerseIndex = (data) => {
+    console.log(data);
+    setSurah(data);
+    setModalVisible(true);
+  };
   return (
     <View style={Styles.screen}>
+      {/* Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View
+          style={{
+            width: "90%",
+            backgroundColor: Colors.color2,
+            marginLeft: "5%",
+            marginTop: "35%",
+            elevation: 4,
+            padding: 15,
+          }}
+        >
+          <View>
+            <Text
+              style={{
+                color: Colors.pink,
+                textAlign: "center",
+                marginBottom: 20,
+                letterSpacing: 2,
+                fontSize: 16,
+              }}
+            >
+              {surah?.name?.transliteration.en}
+              <Text style={{
+              paddingLeft: 20
+          }}>{"      "+ surah?.name?.short}</Text>
+            </Text>
+
+            <Text
+              style={{
+                color: "#eee",
+                textAlign: "center",
+                marginBottom: 20,
+                letterSpacing: 2,
+                fontSize: 16,
+              }}
+            >
+              Select Verse Number
+            </Text>
+
+            <TextInput
+              placeholderTextColor="#ddd"
+              keyboardType="number-pad"
+              placeholder="Verse/Ayah Index"
+              style={{
+                backgroundColor: Colors.color3,
+                width: "50%",
+                padding: 5,
+                paddingLeft: 10,
+                color: "white",
+                marginLeft: "25%",
+              }}
+            />
+
+            <View
+              style={{
+                flexDirection: "row",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-around",
+                marginTop: 25,
+              }}
+            >
+              <Pressable
+                style={{
+                  backgroundColor: "#f44",
+                  paddingVertical: 10,
+                  paddingHorizontal: 20,
+                }}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={{ color: "white" }}>Cancel</Text>
+              </Pressable>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: Colors.pink,
+                  paddingVertical: 10,
+                  paddingHorizontal: 20,
+                  display:"flex",
+                  flexDirection: "row",
+                  borderRadius: 3
+                }}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <AntDesign name="search1" size={17} color='white' />
+                <Text style={{ color: "white", marginLeft: 20 }}>Search</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* End Modal */}
       <View
         style={{
           backgroundColor: Colors.color1,
@@ -97,7 +208,13 @@ const Search = ({ navigation }) => {
         ) : (
           <>
             {data.map((d) => {
-              return <SuraList key={d.number} data={d} />;
+              return (
+                <SuraList
+                  key={d.number}
+                  data={d}
+                  callVerseIndex={() => callVerseIndex(d)}
+                />
+              );
             })}
           </>
         )}
