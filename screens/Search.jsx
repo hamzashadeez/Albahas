@@ -204,7 +204,7 @@ const Search = ({ navigation }) => {
           placeholder="search.."
         />
         <TouchableOpacity onPress={() => cancel()}>
-          <Text style={{ color: Colors.pink }}>Cancel</Text>
+          <Text style={{ color: "#B83280" }}>Cancel</Text>
         </TouchableOpacity>
       </View>
       <Text

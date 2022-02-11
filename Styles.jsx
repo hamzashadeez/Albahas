@@ -4,7 +4,8 @@ import {StyleSheet} from 'react-native'
 const Colors = {
     black: '#03192e',
     white: '#fff',
-    pink: "#B83280",
+    // pink: "#B83280",
+    pink: "pink",
     grey: "#2D3748",
     color1: '#041c32',
     color2: '#04293a',
