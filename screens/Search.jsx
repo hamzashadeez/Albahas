@@ -19,6 +19,7 @@ const Search = ({ navigation }) => {
   const [list, setList] = useState([]);
   const [surah, setSurah] = useState({});
   const [loading, setLoading] = useState(true);
+  const [aya, setAyat] = useState(1);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -30,6 +31,19 @@ const Search = ({ navigation }) => {
         setData(data.data);
         setList(data.data);
       });
+  };
+
+  const getAyaDetail = () => {
+    if (parseInt(aya) <= surah?.numberOfVerses) {
+      setModalVisible(!modalVisible)
+      navigation.navigate('result', {aya, surah: surah?.number})
+      console.log(surah?.number);
+      console.log(aya);
+    } else {
+      alert("Too much verse number for this surah");
+    }
+    // navigate to the other screen
+    //and pass the data=> new screen
   };
 
   useEffect(() => {
@@ -86,9 +100,13 @@ const Search = ({ navigation }) => {
               }}
             >
               {surah?.name?.transliteration.en}
-              <Text style={{
-              paddingLeft: 20
-          }}>{"      "+ surah?.name?.short}</Text>
+              <Text
+                style={{
+                  paddingLeft: 20,
+                }}
+              >
+                {"      " + surah?.name?.short}
+              </Text>
             </Text>
 
             <Text
@@ -115,6 +133,8 @@ const Search = ({ navigation }) => {
                 color: "white",
                 marginLeft: "25%",
               }}
+              value={aya.toString()}
+              onChangeText={(e) => setAyat(e)}
             />
 
             <View
@@ -141,13 +161,13 @@ const Search = ({ navigation }) => {
                   backgroundColor: Colors.pink,
                   paddingVertical: 10,
                   paddingHorizontal: 20,
-                  display:"flex",
+                  display: "flex",
                   flexDirection: "row",
-                  borderRadius: 3
+                  borderRadius: 3,
                 }}
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => getAyaDetail()}
               >
-                <AntDesign name="search1" size={17} color='white' />
+                <AntDesign name="search1" size={17} color="white" />
                 <Text style={{ color: "white", marginLeft: 20 }}>Search</Text>
               </TouchableOpacity>
             </View>
