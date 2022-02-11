@@ -158,7 +158,7 @@ const Search = ({ navigation }) => {
               </Pressable>
               <TouchableOpacity
                 style={{
-                  backgroundColor: Colors.pink,
+                  backgroundColor: "#B83280",
                   paddingVertical: 10,
                   paddingHorizontal: 20,
                   display: "flex",

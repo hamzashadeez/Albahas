@@ -1,25 +1,43 @@
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
+import React from "react";
 import { Styles, Colors } from "../Styles";
 import Loader from "../components/Loader";
+import { AntDesign, Feather } from "@expo/vector-icons";
+import { Audio } from "expo-av";
 
 const Result = ({ navigation, route }) => {
   const { aya, surah } = route.params;
   const [data, setData] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [sound, setSound] = React.useState();
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
       fetch(`https://api.quran.sutanlab.id/surah/${surah}/${aya}`)
         .then((response) => response.json())
         .then((data) => {
-          setLoading(false);
           setData(data.data);
-          console.log(data.data);
         });
     };
     getData();
   }, []);
+
+  const readAyah = async () => {
+    console.log("Loading Sound");
+    const { sound } = await Audio.Sound.createAsync({
+      uri: data?.audio?.primary,
+    });
+    setSound(sound);
+    await sound.playAsync();
+  };
 
   return (
     <View style={Styles.screen}>
@@ -88,30 +106,82 @@ const Result = ({ navigation, route }) => {
         >
           Transliteration
         </Text>
-        <Text style={{ color: "#eaeaea", fontSize: 15, textAlign: "left", marginBottom: 15 }}>
+        <Text
+          style={{
+            color: "#eaeaea",
+            fontSize: 15,
+            textAlign: "left",
+            marginBottom: 15,
+          }}
+        >
           {data?.text?.transliteration.en}
         </Text>
-          <Text
-            style={{
-              color: "grey",
-              fontSize: 10,
-              textAlign: "left",
-              marginBottom: 5,
-            }}
-          >
-            Translation
-          </Text>
-          <Text style={{ color: "#eaeaea", fontSize: 15, textAlign: "left", marginBottom: 15 }}>
+        <Text
+          style={{
+            color: "grey",
+            fontSize: 10,
+            textAlign: "left",
+            marginBottom: 5,
+          }}
+        >
+          Translation
+        </Text>
+        <Text
+          style={{
+            color: "#eaeaea",
+            fontSize: 15,
+            textAlign: "left",
+            marginBottom: 15,
+          }}
+        >
           {data?.translation?.en}
         </Text>
       </ScrollView>
       {/* end of main */}
-      {/* <Text>{JSON.stringify(aya)}</Text>
-      <Text>{JSON.stringify(surah)}</Text> */}
+      <View style={styles.control}>
+        <TouchableOpacity style={styles.btn}>
+          <AntDesign name="download" size={16} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => readAyah()}
+          style={{
+            borderRadius: 40,
+            padding: 15,
+            elevation: 10,
+            backgroundColor: "#B83280",
+          }}
+        >
+          <AntDesign name="sound" size={16} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn}>
+          <Feather name="bookmark" size={16} color="white" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 export default Result;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  btn: {
+    backgroundColor: Colors.color2,
+    borderRadius: 40,
+    padding: 13,
+    elevation: 1,
+  },
+  control: {
+    marginBottom: 15,
+    width: "80%",
+    elevation: 4,
+    borderRadius: 5,
+    backgroundColor: Colors.grey,
+    height: 55,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    marginLeft: "10%",
+    // paddingHorizontal: "10%",
+  },
+});

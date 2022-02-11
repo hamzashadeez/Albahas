@@ -19,7 +19,7 @@ const SuraList = ({data, callVerseIndex}) => {
         <Text style={{
           color: Colors.grey,
           fontSize: 11
-      }}>Surah Index: {data.number}</Text>
+      }}>Surah Number: {data.number}</Text>
       </View>
       <Text style={{
           color: Colors.pink,
