@@ -12,38 +12,32 @@ import { Styles, Colors } from "../Styles";
 import { AntDesign } from "@expo/vector-icons";
 import SuraList from "../components/SuraList";
 import Loader from "../components/Loader";
+import Surahs from "../recoil/Atom";
+import { useRecoilState } from "recoil";
 
 const Search = ({ navigation }) => {
+  const [surahs, setSurahs] = useRecoilState(Surahs);
   const [search, setSearch] = useState("");
-  const [data, setData] = useState([]);
-  const [list, setList] = useState([]);
+  const [data, setData] = useState(surahs);
+  const [list, setList] = useState(surahs);
   const [surah, setSurah] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [aya, setAyat] = useState(1);
+
+  useEffect(() => {
+    setData(surah);
+  }, []);
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const getSuraList = async () => {
-    fetch("https://api.quran.sutanlab.id/surah")
-      .then((response) => response.json())
-      .then((data) => {
-        setLoading(false);
-        setData(data.data);
-        setList(data.data);
-      });
-  };
-
   const getAyaDetail = () => {
     if (parseInt(aya) <= surah?.numberOfVerses) {
-      setModalVisible(!modalVisible)
-      navigation.navigate('result', {aya, surah: surah?.number})
-      console.log(surah?.number);
-      console.log(aya);
+      setModalVisible(!modalVisible);
+      setAyat(1);
+      navigation.navigate("result", { aya, surah: surah?.number });
     } else {
       alert("Too much verse number for this surah");
     }
-    // navigate to the other screen
-    //and pass the data=> new screen
   };
 
   useEffect(() => {
@@ -54,17 +48,12 @@ const Search = ({ navigation }) => {
     setData(filteredList);
   }, [search]);
 
-  useEffect(() => {
-    getSuraList();
-  }, []);
-
   const cancel = () => {
     setSearch("");
     navigation.goBack();
   };
 
   const callVerseIndex = (data) => {
-    console.log(data);
     setSurah(data);
     setModalVisible(true);
   };

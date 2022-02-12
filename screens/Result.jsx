@@ -30,6 +30,10 @@ const Result = ({ navigation, route }) => {
     getData();
   }, []);
 
+  const bookmark_result = async () => {};
+
+  const download = async () => {};
+
   const readAyah = async () => {
     console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync({
@@ -72,8 +76,20 @@ const Result = ({ navigation, route }) => {
           {data?.surah?.name?.long}
         </Text>
       </View>
-      {/* <Loader /> */}
-
+      <View
+        style={{
+          width: 30,
+          height: 30,
+          marginLeft: 15,
+          borderRadius: 15,
+          backgroundColor: "#B83280",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Text style={{ color: Colors.color1, fontSize: 10 }}>{aya}</Text>
+      </View>
       {/* Main */}
       <ScrollView style={{ padding: 15, flex: 1 }}>
         <Text
