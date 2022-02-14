@@ -4,21 +4,37 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Pressable,
   TouchableOpacity,
+  ToastAndroid
 } from "react-native";
 import React from "react";
 import { Styles, Colors } from "../Styles";
-import Loader from "../components/Loader";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { Audio } from "expo-av";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Result = ({ navigation, route }) => {
   const { aya, surah } = route.params;
   const [data, setData] = useState({});
   const [sound, setSound] = React.useState();
+  const [bkmark, setBkmark] = useState([]);
   // const [loading, setLoading] = useState(true);
 
+  function showToast() {
+    ToastAndroid.show('Bookmark added!', ToastAndroid.SHORT);
+  }
+  
+  useEffect(() => {
+    AsyncStorage.getItem("bkmk").then((value) => {
+      if (value !== null) {
+        setBkmark(JSON.parse(value));
+        console.log(JSON.parse(value));
+      }
+      bkmark.map(b=>console.log(b))
+    });
+  }, []);
+
+  
   useEffect(() => {
     const getData = async () => {
       fetch(`https://api.quran.sutanlab.id/surah/${surah}/${aya}`)
@@ -30,12 +46,22 @@ const Result = ({ navigation, route }) => {
     getData();
   }, []);
 
-  const bookmark_result = async () => {};
+  const bookmark_result = () => {
+    try {
+      let bookmark_data = bkmark === []? [data] : [data, ...bkmark];
+      AsyncStorage.setItem("bkmk", JSON.stringify(bookmark_data) ).then(()=>{
+        console.log("DONE-----")
+        showToast()
+      });
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  };
 
   const download = async () => {};
 
   const readAyah = async () => {
-    console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync({
       uri: data?.audio?.primary,
     });
@@ -82,7 +108,7 @@ const Result = ({ navigation, route }) => {
           height: 30,
           marginLeft: 15,
           borderRadius: 15,
-          backgroundColor: "#B83280",
+          backgroundColor: "#seagreen",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -169,7 +195,7 @@ const Result = ({ navigation, route }) => {
         >
           <AntDesign name="sound" size={16} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={() => bookmark_result()}>
           <Feather name="bookmark" size={16} color="white" />
         </TouchableOpacity>
       </View>
