@@ -28,9 +28,7 @@ const Result = ({ navigation, route }) => {
     AsyncStorage.getItem("bkmk").then((value) => {
       if (value !== null) {
         setBkmark(JSON.parse(value));
-        console.log(JSON.parse(value));
       }
-      bkmark.map(b=>console.log(b))
     });
   }, []);
 
@@ -108,7 +106,7 @@ const Result = ({ navigation, route }) => {
           height: 30,
           marginLeft: 15,
           borderRadius: 15,
-          backgroundColor: "#seagreen",
+          backgroundColor: "seagreen",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",

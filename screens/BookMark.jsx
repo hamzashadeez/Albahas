@@ -6,12 +6,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const BookMark = ({navigation}) => {
   const [bkmark, setBkmark] = useState([]);
   useEffect(() => {
-    return AsyncStorage.getItem("bkmk").then((value) => {
-      if (value !== null) {
-        setBkmark(JSON.parse(value));
-      }
-    });
-  }, []);
+     async function check(){
+      AsyncStorage.getItem("bkmk").then((value) => {
+        if (value !== null) {
+          setBkmark(JSON.parse(value));
+        }
+      });
+     }
+
+     check()
+  }, [bkmark]);
 
   return (
     <View style={Styles.screen}>
@@ -42,7 +46,7 @@ const BookMark = ({navigation}) => {
       <ScrollView style={{ flex: 1 }}>
         {bkmark.map((d) => (
           <TouchableOpacity
-            onPress={()=> navigation.navigate('bkresult', {data: d, aya: d.number.inSurah})}
+            onPress={()=> navigation.navigate('bkresult', {data: d, aya: d.number.inSurah, inQuran: d.number.inQuran})}
             style={{
               backgroundColor: Colors.color2,
               marginBottom: 10,

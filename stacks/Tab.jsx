@@ -27,7 +27,7 @@ export default function TabStack({navigation}) {
           );
         },
         tabBarActiveTintColor: Colors.pink,
-        tabBarInactiveTintColor: "#ccc",
+        tabBarInactiveTintColor: Colors.color3,
         // tabBarShowLabel:false
         tabBarStyle: { backgroundColor: Colors.color1, borderTopWidth: 0 },
       })}

@@ -41,7 +41,6 @@ const Home = ({ navigation }) => {
             style={{
               fontSize: 18,
               color: Colors.color2,
-              // fontWeight: 500,
               marginVertical: 25,
               textAlign: "center",
             }}

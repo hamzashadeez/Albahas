@@ -11,10 +11,20 @@ import React from "react";
 import { Styles, Colors } from "../Styles";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { Audio } from "expo-av";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const BkResult = ({ navigation, route }) => {
-  const { data, aya } = route.params;
+  const { data, aya, inQuran } = route.params;
   const [sound, setSound] = React.useState();
+  const [bkmark, setBkmark] = useState([]);
+  useEffect(() => {
+    return AsyncStorage.getItem("bkmk").then((value) => {
+      if (value !== null) {
+        setBkmark(JSON.parse(value));
+      }
+    });
+  }, []);
 
   const readAyah = async () => {
     const { sound } = await Audio.Sound.createAsync({
@@ -23,6 +33,20 @@ const BkResult = ({ navigation, route }) => {
     setSound(sound);
     await sound.playAsync();
   };
+
+  const deleteBookmark = async () =>{
+    // delete this bokmark
+    const newList = bkmark.filter((bk) => bk.number.inQuran !== inQuran)
+    try {
+      AsyncStorage.setItem("bkmk", JSON.stringify(newList) ).then(()=>{
+        navigation.goBack();
+      });
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+    // route back to the list
+  }
 
   return (
     <View style={Styles.screen}>
@@ -57,6 +81,7 @@ const BkResult = ({ navigation, route }) => {
           {data?.surah?.name?.long}
         </Text>
       </View>
+      <View style={styles.align}>
       <View
         style={{
           width: 30,
@@ -70,6 +95,23 @@ const BkResult = ({ navigation, route }) => {
         }}
       >
         <Text style={{ color: Colors.color1, fontSize: 10 }}>{aya}</Text>
+      </View>
+      <TouchableOpacity
+        onPress={()=>deleteBookmark()}
+        style={{
+          width: 30,
+          height: 30,
+          borderRadius: 15,
+          marginLeft: 15,
+          backgroundColor: "#B83280",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <AntDesign name="delete" size={16} color="white" />
+        {/* <Text style={{ color: Colors.color1, fontSize: 10 }}>{aya}</Text> */}
+      </TouchableOpacity>
       </View>
       {/* Main */}
       <ScrollView style={{ padding: 15, flex: 1 }}>
@@ -181,4 +223,10 @@ const styles = StyleSheet.create({
     marginLeft: "10%",
     // paddingHorizontal: "10%",
   },
+
+  align:{
+    width: 100,
+    display: 'flex',
+    flexDirection: "row"
+  }
 });
