@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Styles, Colors } from "../Styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const BookMark = () => {
+const BookMark = ({navigation}) => {
   const [bkmark, setBkmark] = useState([]);
   useEffect(() => {
     return AsyncStorage.getItem("bkmk").then((value) => {
@@ -42,6 +42,7 @@ const BookMark = () => {
       <ScrollView style={{ flex: 1 }}>
         {bkmark.map((d) => (
           <TouchableOpacity
+            onPress={()=> navigation.navigate('bkresult', {data: d, aya: d.number.inSurah})}
             style={{
               backgroundColor: Colors.color2,
               marginBottom: 10,
@@ -56,12 +57,11 @@ const BookMark = () => {
             key={d.number.inQuran}
           >
             <View>
-              <Text>
+              <Text style={{ color: 'seagreen' }}>
                 {d?.surah?.name?.transliteration?.en}
                 {"   "}
                 {d.surah?.name?.long}
               </Text>
-              {/* <Text>{d.text?.arab}</Text> */}
             </View>
             <View
               style={{
@@ -75,7 +75,7 @@ const BookMark = () => {
                 justifyContent: "center",
               }}
             >
-              <Text style={{ color: Colors.color1, fontSize: 10 }}>
+              <Text style={{ color: Colors.color3, fontSize: 10 }}>
                 {d?.number.inSurah}
               </Text>
             </View>

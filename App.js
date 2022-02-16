@@ -2,7 +2,7 @@
 import { StyleSheet, StatusBar, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import TabStack from "./stacks/Tab";
-import { Search, Result } from "./screens";
+import { Search, Result, BkResult } from "./screens";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RecoilRoot } from 'recoil';
 
@@ -17,6 +17,7 @@ export default function App() {
             <Stack.Screen name="homestack" component={TabStack} />
             <Stack.Screen name="search" component={Search} />
             <Stack.Screen name="result" component={Result} />
+            <Stack.Screen name="bkresult" component={BkResult} />
           </Stack.Navigator>
         </View>
       </NavigationContainer>
@@ -28,6 +29,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // marginTop: StatusBar.currentHeight,
   },
 });

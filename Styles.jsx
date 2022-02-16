@@ -19,7 +19,7 @@ const Styles = StyleSheet.create({
     },
 
     h1:{
-        fontSize: 27,
+        fontSize: 21,
         fontWeight: '600',
         textAlign: 'center',
         marginVertical: 15,
