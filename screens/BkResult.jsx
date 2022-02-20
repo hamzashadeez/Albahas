@@ -1,27 +1,84 @@
-import { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  ToastAndroid
+  ToastAndroid,
 } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Styles, Colors } from "../Styles";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as FileSystem from "expo-file-system";
 
+// import { StorageAccessFramework } from "expo-file-system";
 
 const BkResult = ({ navigation, route }) => {
   const { data, aya, inQuran } = route.params;
   const [sound, setSound] = React.useState();
   const [bkmark, setBkmark] = useState([]);
+  const [downloadState, setDownloads] = useState([]);
+
   useEffect(() => {
-    return AsyncStorage.getItem("bkmk").then((value) => {
+    AsyncStorage.getItem("bkmk").then((value) => {
       if (value !== null) {
         setBkmark(JSON.parse(value));
+      }
+    });
+  }, []);
+
+  const saveAudio = (d) => {
+    try {
+      let data =  [d, ...downloadState];
+      AsyncStorage.setItem("downloads", JSON.stringify(data) ).then(()=>{
+        console.log("DONE-----")
+      });
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  };
+
+  const callback = (downloadProgress) => {
+    const progress =
+      downloadProgress.totalBytesWritten /
+      downloadProgress.totalBytesExpectedToWrite;
+
+    console.log({
+      downloadProgress: progress,
+    });
+  };
+
+  const downloadResumable = FileSystem.createDownloadResumable(
+    data?.audio?.primary,
+    FileSystem.documentDirectory + `${inQuran}.mp3`,
+    {},
+    callback
+  );
+
+  const download = async () => {
+    try {
+      const { uri } = await downloadResumable.downloadAsync();
+      let downloadData = {
+        uri,
+        aya,
+        en: data?.surah?.name?.transliteration?.en,
+        arab: data?.surah?.name?.long
+      }
+      saveAudio(downloadData)
+      ToastAndroid.show("Downloaded...", ToastAndroid.SHORT);
+      console.log("Finished downloading to ", uri);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    return AsyncStorage.getItem("downloads").then((value) => {
+      if (value !== null) {
+        setDownloads(JSON.parse(value));
       }
     });
   }, []);
@@ -34,11 +91,11 @@ const BkResult = ({ navigation, route }) => {
     await sound.playAsync();
   };
 
-  const deleteBookmark = async () =>{
+  const deleteBookmark = async () => {
     // delete this bokmark
-    const newList = bkmark.filter((bk) => bk.number.inQuran !== inQuran)
+    const newList = bkmark.filter((bk) => bk.number.inQuran !== inQuran);
     try {
-      AsyncStorage.setItem("bkmk", JSON.stringify(newList) ).then(()=>{
+      AsyncStorage.setItem("bkmk", JSON.stringify(newList)).then(() => {
         navigation.goBack();
       });
     } catch (e) {
@@ -46,7 +103,7 @@ const BkResult = ({ navigation, route }) => {
       console.log(e);
     }
     // route back to the list
-  }
+  };
 
   return (
     <View style={Styles.screen}>
@@ -82,36 +139,36 @@ const BkResult = ({ navigation, route }) => {
         </Text>
       </View>
       <View style={styles.align}>
-      <View
-        style={{
-          width: 30,
-          height: 30,
-          borderRadius: 15,
-          marginLeft: 15,
-          backgroundColor: "seagreen",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Text style={{ color: Colors.color1, fontSize: 10 }}>{aya}</Text>
-      </View>
-      <TouchableOpacity
-        onPress={()=>deleteBookmark()}
-        style={{
-          width: 30,
-          height: 30,
-          borderRadius: 15,
-          marginLeft: 15,
-          backgroundColor: "#B83280",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <AntDesign name="delete" size={16} color="white" />
-        {/* <Text style={{ color: Colors.color1, fontSize: 10 }}>{aya}</Text> */}
-      </TouchableOpacity>
+        <View
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+            marginLeft: 15,
+            backgroundColor: "seagreen",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ color: Colors.color1, fontSize: 10 }}>{aya}</Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => deleteBookmark()}
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+            marginLeft: 15,
+            backgroundColor: "#B83280",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <AntDesign name="delete" size={16} color="white" />
+          {/* <Text style={{ color: Colors.color1, fontSize: 10 }}>{aya}</Text> */}
+        </TouchableOpacity>
       </View>
       {/* Main */}
       <ScrollView style={{ padding: 15, flex: 1 }}>
@@ -178,7 +235,7 @@ const BkResult = ({ navigation, route }) => {
       </ScrollView>
       {/* end of main */}
       <View style={styles.control}>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={() => download()}>
           <AntDesign name="download" size={16} color="white" />
         </TouchableOpacity>
         <TouchableOpacity
@@ -192,7 +249,10 @@ const BkResult = ({ navigation, route }) => {
         >
           <AntDesign name="sound" size={16} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={()=>navigation.navigate('home')}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("home")}
+        >
           <Feather name="home" size={16} color="white" />
         </TouchableOpacity>
       </View>
@@ -224,9 +284,9 @@ const styles = StyleSheet.create({
     // paddingHorizontal: "10%",
   },
 
-  align:{
+  align: {
     width: 100,
-    display: 'flex',
-    flexDirection: "row"
-  }
+    display: "flex",
+    flexDirection: "row",
+  },
 });

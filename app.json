@@ -18,6 +18,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "permissions": [],
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-5718874511289116~2035120378"
       }
     },
     "web": {

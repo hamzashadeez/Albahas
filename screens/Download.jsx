@@ -1,23 +1,60 @@
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Styles } from '../Styles';
+import { Styles, Colors } from '../Styles';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import DownloadItem from '../components/DownloadItem';
 
 const Download = () => {
-  const [bkmark, setBkmark] = useState([]);
+  const [downloads, setDownloads] = useState([]);
+ 
   useEffect(() => {
-    AsyncStorage.getItem("bookmarkhamza").then((value) => {
-      if (value !== null) {
-        setBkmark(JSON.parse(value));
-        console.log(JSON.parse(value));
-      }
-    });
+     async function check(){
+      AsyncStorage.getItem("downloads").then((value) => {
+        if (value !== null) {
+          setDownloads(JSON.parse(value));
+        }
+      });
+     }
+
+     check()
   }, []);
+
   return (
     <View style={Styles.screen}>
-      <Text>Download</Text>
+      <View
+        style={{
+          backgroundColor: Colors.color1,
+          paddingVertical: 15,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingHorizontal: 10,
+          marginBottom: 10,
+        }}
+      >
+        <Text
+          style={{
+            color: Colors.pink,
+            textAlign: "center",
+            letterSpacing: 1.6,
+            textTransform: "uppercase",
+            fontSize: 15,
+          }}
+        >
+          Download
+        </Text>
+      </View>
+      {/* End of Header */}
+      <ScrollView style={{flex: 1, padding: 10}}>
+          {downloads.map((d)=>{
+            return <DownloadItem data={d} key={d.uri} />
+          })}
+      </ScrollView>
     </View>
   );
 };
 
 export default Download;
+
+
