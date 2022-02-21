@@ -22,7 +22,7 @@ export default function TabStack({navigation}) {
 
           // You can return any component that you like here!
           return (
-            <FontAwesome5 name={iconName} size={size} color={color} />
+            <FontAwesome5 name={iconName} size={20} color={color} />
           );
         },
         tabBarActiveTintColor: Colors.pink,
@@ -34,6 +34,7 @@ export default function TabStack({navigation}) {
       <Tab.Screen
         options={{
           title: "Home",
+          tabBarShowLabel: false,
           headerShown: false,
           headerStyle: {
             backgroundColor: "#61305D",
@@ -53,6 +54,7 @@ export default function TabStack({navigation}) {
         component={BookMark}
         options={{
           title: "Bookmark",
+          tabBarShowLabel: false,
           headerShown: false,
           headerStyle: {
             backgroundColor: "#61305D",
@@ -68,6 +70,7 @@ export default function TabStack({navigation}) {
         component={Donate}
         options={{
           title: "donate",
+          tabBarShowLabel: false,
           headerShown: false,
           headerStyle: {
             backgroundColor: "#61305D",

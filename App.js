@@ -1,24 +1,23 @@
 // import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, StatusBar, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import TabStack from "./stacks/Tab";
-import { Search, Result, BkResult } from "./screens";
+import { RecoilRoot } from "recoil";
+import AppStack from "./stacks/AppStack";
+import Flash from "./screens/Flash";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { RecoilRoot } from 'recoil';
 
-const Stack = createNativeStackNavigator();
 export default function App() {
+  const Stack = createNativeStackNavigator();
   return (
     <RecoilRoot>
       <NavigationContainer>
         <View style={styles.container}>
           <StatusBar style="light" />
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="homestack" component={TabStack} />
-            <Stack.Screen name="search" component={Search} />
-            <Stack.Screen name="result" component={Result} />
-            <Stack.Screen name="bkresult" component={BkResult} />
+            <Stack.Screen name="flash" component={Flash} />
+            <Stack.Screen name="app" component={AppStack} />
           </Stack.Navigator>
+          {/* <AppStack/> */}
         </View>
       </NavigationContainer>
     </RecoilRoot>

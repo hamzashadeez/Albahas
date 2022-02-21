@@ -2,27 +2,9 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Colors, Styles } from "../Styles";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useRecoilState } from "recoil";
-import Surahs from "../recoil/Atom";
 
 const Home = ({ navigation }) => {
-  const [surahs, setSurahs] = useRecoilState(Surahs);
-
-  const getSuraList = async () => {
-    try {
-      fetch("https://api.quran.sutanlab.id/surah")
-        .then((response) => response.json())
-        .then((data) => {
-          setSurahs(data.data);
-        });
-    } catch (error) {
-      consoe.log("error");
-    }
-  };
-
-  useEffect(() => {
-    getSuraList();
-  }, []);
+  
 
   return (
     <View style={Styles.screen}>
@@ -49,7 +31,7 @@ const Home = ({ navigation }) => {
           </Text>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("search", { transition: "vertical" })
+              navigation.navigate("search")
             }
             style={{
               width: 200,

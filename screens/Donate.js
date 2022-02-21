@@ -32,19 +32,19 @@ const Donate = () => {
       </View>
       <Text
         style={{
-          fontSize: 20,
+          fontSize: 17,
           marginVertical: 30,
           paddingHorizontal: 15,
           color: Colors.color3,
         }}
       >
-        Albahas is a project handled my a small team, please consider donating
+        Albahas is a project handled by a small team, please consider donating
         to this project and let it be amoung your Sadaqa Jariya, any amount will
         surely help in the development of this project, Jazakallah khayrah
       </Text>
       <TouchableOpacity
         style={styles.donateBtn}
-        onPress={() => Linking.openURL("https://albahas.com.ng")}
+        onPress={() => Linking.openURL("https://albahas.com.ng/donate.html")}
       >
         {/* icon here */}
         <FontAwesome5 name="hand-holding-usd" size={20} color="white" />
