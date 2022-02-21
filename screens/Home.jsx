@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Colors, Styles } from "../Styles";
-import { AntDesign } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { useRecoilState } from "recoil";
 import Surahs from "../recoil/Atom";
 

@@ -7,15 +7,21 @@ const DownloadItem = ({ data }) => {
   const [playing, setPlaying] = useState(false);
 
   const playIt = async () => {
-      try {
-        console.log(data.uri);
+    try {
+      console.log(data.uri);
+      let source = { uri: "file:///data/user/0/host.exp.exponent/files/ExperienceData/%2540anonymous%252Falbahas-edddd70e-abec-4864-88f2-55beb5eafd52/1.mp3" }
       const { sound } = await Audio.Sound.createAsync(
-          {localUri: data.uri}
+        //  {source: data.uri} 
+        source,
+        {
+          shouldPlay: true
+        }
       );
       // setSound(sound);
       await sound.playAsync();
     } catch (error) {
       console.log(error);
+      alert(error.message)
     }
   };
   return (

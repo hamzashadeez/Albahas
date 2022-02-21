@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Styles, Colors } from "../Styles";
-import { AntDesign } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import SuraList from "../components/SuraList";
 import Loader from "../components/Loader";
 import Surahs from "../recoil/Atom";

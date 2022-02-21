@@ -9,8 +9,10 @@ import {
 } from "react-native";
 import React from "react";
 import { Styles, Colors } from "../Styles";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import Feather from "@expo/vector-icons/Feather";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { Audio } from "expo-av";
+import * as Linking from 'expo-linking';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Result = ({ navigation, route }) => {
@@ -57,7 +59,9 @@ const Result = ({ navigation, route }) => {
     }
   };
 
-  const download = async () => {};
+  const download = async () => {
+    Linking.openURL(data?.audio?.primary);
+  };
 
   const readAyah = async () => {
     const { sound } = await Audio.Sound.createAsync({
@@ -179,7 +183,7 @@ const Result = ({ navigation, route }) => {
       </ScrollView>
       {/* end of main */}
       <View style={styles.control}>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={()=>download()}>
           <AntDesign name="download" size={16} color="white" />
         </TouchableOpacity>
         <TouchableOpacity

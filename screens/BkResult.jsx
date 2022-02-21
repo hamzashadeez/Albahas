@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Styles, Colors } from "../Styles";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import Feather from "@expo/vector-icons/Feather";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { Audio } from "expo-av";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
-
+import * as Linking from 'expo-linking';
 // import { StorageAccessFramework } from "expo-file-system";
 
 const BkResult = ({ navigation, route }) => {
@@ -52,27 +53,14 @@ const BkResult = ({ navigation, route }) => {
   };
 
   const downloadResumable = FileSystem.createDownloadResumable(
-    data?.audio?.primary,
+    data.audio.primary,
     FileSystem.documentDirectory + `${inQuran}.mp3`,
     {},
     callback
   );
 
   const download = async () => {
-    try {
-      const { uri } = await downloadResumable.downloadAsync();
-      let downloadData = {
-        uri,
-        aya,
-        en: data?.surah?.name?.transliteration?.en,
-        arab: data?.surah?.name?.long
-      }
-      saveAudio(downloadData)
-      ToastAndroid.show("Downloaded...", ToastAndroid.SHORT);
-      console.log("Finished downloading to ", uri);
-    } catch (e) {
-      console.error(e);
-    }
+    Linking.openURL(data?.audio?.primary);
   };
 
   useEffect(() => {

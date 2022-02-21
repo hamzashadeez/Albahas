@@ -1,9 +1,8 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Home, Download, Search, BookMark } from "../screens";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { Home, Donate, BookMark } from "../screens";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Colors } from "../Styles";
 import HomeStack from "./HomeStack";
-// import HomeStack from "./HomeStack";
 
 const Tab = createBottomTabNavigator();
 export default function TabStack({navigation}) {
@@ -14,16 +13,16 @@ export default function TabStack({navigation}) {
           let iconName;
 
           if (route.name === "home") {
-            iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "download") {
-            iconName = focused ? "download-circle" : "download-circle-outline";
+            iconName =  "home";
+          } else if (route.name === "donate") {
+            iconName =  "hand-holding-usd";
           } else if (route.name === "bookmark") {
-            iconName = focused ? "bookmark" : "bookmark-outline";
+            iconName = "bookmark" ;
           }
 
           // You can return any component that you like here!
           return (
-            <MaterialCommunityIcons name={iconName} size={size} color={color} />
+            <FontAwesome5 name={iconName} size={size} color={color} />
           );
         },
         tabBarActiveTintColor: Colors.pink,
@@ -65,10 +64,10 @@ export default function TabStack({navigation}) {
         }}
       />
       <Tab.Screen
-        name="download"
-        component={Download}
+        name="donate"
+        component={Donate}
         options={{
-          title: "Download",
+          title: "donate",
           headerShown: false,
           headerStyle: {
             backgroundColor: "#61305D",
