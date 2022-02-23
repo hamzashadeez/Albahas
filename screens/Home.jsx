@@ -2,10 +2,9 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Colors, Styles } from "../Styles";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { AdMobBanner } from "expo-ads-admob";
 
 const Home = ({ navigation }) => {
-  
-
   return (
     <View style={Styles.screen}>
       <View style={Styles.header}>
@@ -30,9 +29,7 @@ const Home = ({ navigation }) => {
             Tap to Bahas
           </Text>
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("search")
-            }
+            onPress={() => navigation.navigate("search")}
             style={{
               width: 200,
               height: 200,
@@ -48,6 +45,12 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+      <AdMobBanner
+        bannerSize="fullBanner"
+        adUnitID="ca-app-pub-1388722598607337/3189350093" // Test ID, Replace with your-admob-unit-id
+        servePersonalizedAds // true or false
+        onDidFailToReceiveAdWithError={()=>console.log('error from banner')}
+      />
     </View>
   );
 };

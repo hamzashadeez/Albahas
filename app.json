@@ -5,12 +5,18 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "plugins": [
+      [
+        "expo-ads-admob",
+        {
+          "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+        }
+      ]
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -21,7 +27,7 @@
       },
       "permissions": [],
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-5718874511289116~2035120378"
+        "googleMobileAdsAppId": "ca-app-pub-1388722598607337~3802770836"
       },
       "package": "com.albahas.ng"
     },

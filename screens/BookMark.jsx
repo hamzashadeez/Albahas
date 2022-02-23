@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Styles, Colors } from "../Styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AdMobBanner } from "expo-ads-admob";
 
 const BookMark = ({navigation}) => {
   const [bkmark, setBkmark] = useState([]);
@@ -86,6 +87,12 @@ const BookMark = ({navigation}) => {
           </TouchableOpacity>
         ))}
       </ScrollView>
+      <AdMobBanner
+        bannerSize="fullBanner"
+        adUnitID="ca-app-pub-1388722598607337/3189350093" // Test ID, Replace with your-admob-unit-id
+        servePersonalizedAds // true or false
+        onDidFailToReceiveAdWithError={()=>console.log('error from banner')}
+      />
     </View>
   );
 };
